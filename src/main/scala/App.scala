@@ -11,15 +11,12 @@ object App {
       .option("inferSchema", "true")
       .option("header", "true")
       .option("sep",sep)
-      .load(filename) //.persist()
+      .load(filename)
     return df
   }
 
   def main(args: Array[String]) {
     Logger.getLogger("org").setLevel(Level.ERROR)
-//    val conf = new SparkConf().setAppName("Zohir's spark app").setMaster("local[*]")
-//    val sc = new SparkContext(conf)
-//    val spark = new SQLContext(sc)
     val spark = SparkSession.builder().appName("Zohir's spark app").master("local[*]").getOrCreate()
 
     val df_insee = import_data(spark, ";", "esgi_tp/code-insee-postaux-geoflar.csv")//.persist()
@@ -69,39 +66,7 @@ object App {
     val extract_temp_celsius = udf(temp_celsius)
     val df6 = df5.withColumn("temp_celsius", extract_temp_celsius(col("t")))
 
-    // ajout de la variable temperature ( jointure full pour recuperer aussi les ville sans temp)
-//    val df2 = df1.join(df_synop2, df1("CODE INSEE") === df_synop2("numer_sta"), "full_outer")
-//    println(df2.show(5))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //df.filter(($"Survived" === 1) and ($"Embarked" === 'C')).show()
-    //df.orderBy($"Age".desc, $"Fare".asc).show(4)
-    // select df("PassengerId") // df.col("PassengerId")
-    //df.select(df("Age").cast(IntegerType).between(0, 17).alias("under_age"))
-    // df.withColumn("tax", df("amount") * 0.2)
-    //df.withColumn("fromUdf", complexFunc(df("amount"), df("tax")))
-//    println(df.printSchema)
-//    df.write.mode("overwrite").parquet("out_parquet/emp/")
-//    val df2 = sqlconext.read.parquet("out_parquet/emp/")
-//    println(df2.printSchema)
     println("Done!")
-    //val df2 = df.groupBy($"dept").agg(count(df("age")).alias("count_by_age"), avg(df("age")).alias("avg_age")
-    //val results = df.collect()
-    //for (result <- results.sorted){
-    //  val station = result._ printlnt(s"%station min temp : %station")}
 
   }
 
